@@ -1,6 +1,8 @@
 using LeaveManagementSystem.Web.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using LeaveManagementSystem.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+builder.Services.AddAutoMapper(cfg => { }, Assembly.GetExecutingAssembly());
+builder.Services.AddScoped<ILeaveTypesService, LeaveTypesService>();
+//ILeaveTypesService is the contract and LeaveTypesService is the implementation of the interface
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
