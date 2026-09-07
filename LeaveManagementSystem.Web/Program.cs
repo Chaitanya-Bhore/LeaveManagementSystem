@@ -13,6 +13,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddAutoMapper(cfg => { }, Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<ILeaveTypesService, LeaveTypesService>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 //ILeaveTypesService is the contract and LeaveTypesService is the implementation of the interface
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()

@@ -6,7 +6,11 @@ using LeaveManagementSystem.Web.Models.LeaveTypes;
 using System.Linq;
 using AutoMapper;
 using LeaveManagementSystem.Web.Services;
+using LeaveManagementSystem.Web.Common;
 
+
+
+[Authorize(Roles = Roles.Administrator)]
 
 public class LeaveTypesController(ILeaveTypesService _leaveTypesService) : Controller
 {
