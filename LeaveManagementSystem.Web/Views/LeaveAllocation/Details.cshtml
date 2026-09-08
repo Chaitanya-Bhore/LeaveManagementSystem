@@ -1,0 +1,135 @@
+﻿@using LeaveManagementSystem.Web.Common
+@model EmployeeAllocationVM
+
+@{
+    ViewData["Title"] = "View Allocations";
+    var isAdmin = User.IsInRole(Roles.Administrator);
+    var isEmployee = User.IsInRole(Roles.Employee);
+    string message = isAdmin
+        ? "You are an administrator and can view all allocations."
+        : "You are not an administrator and can only view your own allocations.";
+}
+
+<h1>View Allocations for @Model.Firstname @Model.Lastname</h1>
+
+@if (isAdmin)
+{
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+}
+@if (isEmployee)
+{
+    <a asp-controller="LeaveRequests" asp-action="Index" class="btn btn-primary">View Leave Requests</a>
+}
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Firstname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Firstname)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Lastname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Lastname)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+    </dl>
+</div>
+
+<hr />
+
+@if (isAdmin && !Model.IsCompletedAllocation)
+{
+    <form asp-action="AllocateLeave" method="post">
+        <input type="hidden" value="@Model.userId" name="userId" />
+        <input type="submit" value="Allocate Leave" class="btn btn-warning" />
+    </form>
+}
+
+@if (Model.LeaveAllocations.Any())
+{
+    <div class="card">
+        <div class="card-header">
+            <h4>
+                Leave Allocations for period
+                @Model.LeaveAllocations[0].Period.Name
+            </h4>
+        </div>
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col">Leave Name</div>
+                    <div class="col">Original Allocation</div>
+                    <div class="col">Current Allocation</div>
+                    <div class="col">Action</div>
+                </div>
+            </li>
+
+            @foreach (var allocation in Model.LeaveAllocations)
+            {
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col">
+                            @allocation.LeaveType.Name
+                        </div>
+
+                        <div class="col">
+                            <span class="badge rounded-pill bg-primary">
+                                @allocation.Days
+                            </span>
+                        </div>
+
+                        <div class="col">
+                            <span class="badge rounded-pill bg-warning">
+                                @allocation.Days
+                            </span>
+                        </div>
+
+                        <div class="col">
+                            @if (isAdmin)
+                            {
+                                <a class="btn btn-warning"
+                                   asp-action="EditAllocation"
+                                   asp-route-id="@allocation.Id">
+                                    Edit Allocation
+                                </a>
+                            }
+
+                            <a asp-controller="LeaveRequests"
+                               asp-action="Create"
+                               asp-route-leaveTypeId="@allocation.LeaveType.Id"
+                               class="btn btn-success">
+                                Request Leave
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        <h2>@message</h2>
+    </div>
+}
