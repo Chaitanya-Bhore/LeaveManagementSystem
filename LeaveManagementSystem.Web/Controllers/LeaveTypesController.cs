@@ -1,12 +1,7 @@
-
-using Microsoft.AspNetCore.Mvc;
+using LeaveManagementSystem.Application.Models.LeaveTypes;
+using LeaveManagementSystem.Application.Services.LeaveTypes;
+using LeaveManagementSystem.Common.Static;
 using Microsoft.EntityFrameworkCore;
-using LeaveManagementSystem.Web.Data;
-using LeaveManagementSystem.Web.Models.LeaveTypes;
-using System.Linq;
-using AutoMapper;
-using LeaveManagementSystem.Web.Common;
-using LeaveManagementSystem.Web.Services;
 
 
 
@@ -181,4 +176,3 @@ public class LeaveTypesController(ILeaveTypesService _leaveTypesService) : Contr
 }
 
 
-        

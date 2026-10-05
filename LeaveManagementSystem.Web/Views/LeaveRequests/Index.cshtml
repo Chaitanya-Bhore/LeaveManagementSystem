@@ -1,4 +1,6 @@
-﻿@using LeaveManagementSystem.Web.Services.LeaveRequests
+﻿@using LeaveManagementSystem.Application.Models.LeaveRequests
+@using LeaveManagementSystem.Application.Services.LeaveRequests
+
 @model IEnumerable<LeaveRequestReadOnlyVM>
 
 @*
@@ -7,7 +9,7 @@
 @{
     ViewData["Title"] = "Leave Requests"; 
 }
-<h1>Index</h1>
+<h1>Leave Requests</h1>
 
 <p>
     <a asp-action="Create" class="btn btn-primary">Request Leave</a>
@@ -84,9 +86,9 @@
     </tbody>
 </table>
 
-<form id="cancelform" asp-action="Cancel">
-    <input type="hidden" name="id" id="leaveRequestId"/>
-   
+<form id="cancelForm" asp-action="Cancel" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" id="leaveRequestId" />
 </form>
 @section Scripts
 {
@@ -94,21 +96,24 @@
         $(function() {
             $(".cancelBtn").click(
                 function() {
-                    swal({
+                    Swal.fire({
                         title: "Are you sure?",
                         text: "Are you sure you want to cancel this leave request?",
                         icon: "warning",
-                        buttons: true,
-                        dangerMode: true
-                    }).then((confirm) => {
-                        if (confirm) {
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, cancel it!",
+                        cancelButtonText: "No"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
                             var btn = $(this);
                             var id = btn.data("id");
+
                             $("#leaveRequestId").val(id);
                             $("#cancelForm").submit();
                         }
                     });
-                });
+                }
+            );
         });
     </script>
 }

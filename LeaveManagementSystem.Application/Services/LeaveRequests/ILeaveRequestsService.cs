@@ -1,0 +1,18 @@
+﻿using LeaveManagementSystem.Application.Models.LeaveRequests;
+
+public interface ILeaveRequestsService
+{
+    Task<EmployeeLeaveRequestListVM> AdminGetAllLeaveRequests();
+
+    Task CreateLeaveRequest(LeaveRequestCreateVM model);
+
+    Task<List<LeaveRequestReadOnlyVM>> GetEmployeeLeaveRequests();
+
+    Task CancelLeaveRequest(int leaveRequestId);
+
+    Task ReviewLeaveRequest(int leaveRequestId, bool approved);
+
+    Task<bool> RequestDatesExceedAllocation(LeaveRequestCreateVM model);
+
+    Task<ReviewLeaveRequestVM> GetLeaveRequestForReview(int id);
+}

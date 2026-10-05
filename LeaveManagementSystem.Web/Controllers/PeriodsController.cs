@@ -1,8 +1,5 @@
-
-using Microsoft.AspNetCore.Mvc;
+using LeaveManagementSystem.Common.Static;
 using Microsoft.EntityFrameworkCore;
-using LeaveManagementSystem.Web.Data;
-using LeaveManagementSystem.Web.Common;
 [Authorize(Roles = Roles.Administrator)]
 public class PeriodsController : Controller
 {
@@ -14,7 +11,7 @@ public class PeriodsController : Controller
     }
 
     // GET: PERIODS
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index()
     {
         return View(await _context.Periods.ToListAsync());
     }

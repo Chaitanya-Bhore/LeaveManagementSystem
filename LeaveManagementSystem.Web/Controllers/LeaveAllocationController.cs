@@ -1,8 +1,7 @@
-﻿using LeaveManagementSystem.Web.Common;
-using LeaveManagementSystem.Web.Models.LeaveAllocations;
-using LeaveManagementSystem.Web.Services;
-using LeaveManagementSystem.Web.Services.LeaveAllocations;
-using Microsoft.AspNetCore.Mvc;
+﻿using LeaveManagementSystem.Application.Models.LeaveAllocations;
+using LeaveManagementSystem.Application.Services.LeaveAllocation;
+using LeaveManagementSystem.Application.Services.LeaveTypes;
+using LeaveManagementSystem.Common.Static;
 
 namespace LeaveManagementSystem.Web.Controllers
 {
@@ -42,9 +41,9 @@ namespace LeaveManagementSystem.Web.Controllers
             if (await _leaveTypesService.DaysExceedMaximum(allocation.LeaveType.Id, allocation.Days))
             {
                 ModelState.AddModelError("Days", "The number of days exceeds the maximum allowed.");
-                
+
             }
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 await _leaveAllocationsService.EditAllocation(allocation);
                 return RedirectToAction(nameof(Details), new { userId = allocation.Employee.userId });

@@ -1,0 +1,213 @@
+@using LeaveManagementSystem.Common.Static
+@using LeaveManagementSystem.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Leave Management</title>
+    <link rel="shortcut icon" type="image/png" href="~/images/logos/favicon.png" />
+    <link rel="stylesheet" href="~/css/styles.min.css" />
+    <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="~/lib/sweetalert2/sweetalert2.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LeaveManagementSystem.Web.styles.css" asp-append-version="true" />
+</head>
+
+<body>
+    <!--  Body Wrapper -->
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+         data-sidebar-position="fixed" data-header-position="fixed">
+
+        <!-- Sidebar Start -->
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div>
+                <div class="brand-logo d-flex align-items-center justify-content-between">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="d-flex align-items-center gap-2 text-decoration-none py-3">
+                        <div class="brand-icon-wrapper">
+                            <iconify-icon icon="solar:calendar-date-bold-duotone" class="fs-6 text-primary"></iconify-icon>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold fs-4 text-dark lh-1">Leave Management</span>
+                            <span class="text-muted fs-1 text-uppercase tracking-wider">Portal</span>
+                        </div>
+                    </a>
+                    <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+                        <i class="ti ti-x fs-6"></i>
+                    </div>
+                </div>
+
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+                    <ul id="sidebarnav" class="mb-4 pb-2 list-unstyled">
+                        <!-- Navigation: General -->
+                        <li class="nav-small-cap">General</li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Index" aria-expanded="false">
+                                <iconify-icon icon="solar:home-angle-bold-duotone"></iconify-icon>
+                                <span class="hide-menu">Home</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Privacy" aria-expanded="false">
+                                <iconify-icon icon="solar:shield-check-line-duotone"></iconify-icon>
+                                <span class="hide-menu">Privacy Policy</span>
+                            </a>
+                        </li>
+
+                        <!-- Navigation: Administrator Management -->
+                        @if (User.IsInRole(Roles.Administrator))
+                        {
+                            <li class="nav-small-cap">Management</li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="" asp-controller="LeaveTypes" asp-action="Index" aria-expanded="false">
+                                    <iconify-icon icon="solar:layers-minimalistic-line-duotone"></iconify-icon>
+                                    <span class="hide-menu">Leave Types</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="" asp-controller="Periods" asp-action="Index" aria-expanded="false">
+                                    <iconify-icon icon="solar:calendar-date-line-duotone"></iconify-icon>
+                                    <span class="hide-menu">Periods</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="" asp-controller="LeaveAllocation" asp-action="Index" aria-expanded="false">
+                                    <iconify-icon icon="solar:users-group-two-rounded-line-duotone"></iconify-icon>
+                                    <span class="hide-menu">View Employees</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="" asp-controller="LeaveRequests" asp-action="ListRequests" aria-expanded="false">
+                                    <iconify-icon icon="solar:checklist-minimalistic-line-duotone"></iconify-icon>
+                                    <span class="hide-menu">Manage Requests</span>
+                                </a>
+                            </li>
+                        }
+
+                        <!-- Navigation: Authenticated User / Employee Actions -->
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-small-cap">Leave & Allocations</li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="" asp-controller="LeaveAllocation" asp-action="Details" aria-expanded="false">
+                                    <iconify-icon icon="solar:chart-square-line-duotone"></iconify-icon>
+                                    <span class="hide-menu">View Allocation</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="" asp-controller="LeaveRequests" asp-action="Index" aria-expanded="false">
+                                    <iconify-icon icon="solar:document-text-line-duotone"></iconify-icon>
+                                    <span class="hide-menu">My Leave Requests</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!--  Sidebar End -->
+
+        <!--  Main wrapper -->
+        <div class="body-wrapper">
+            <div class="body-wrapper-inner d-flex flex-column min-vh-100">
+                <div class="container-fluid flex-grow-1 d-flex flex-column">
+                    <!--  Header Start -->
+                    <header class="app-header">
+                        <nav class="navbar navbar-expand navbar-light d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <a class="nav-link sidebartoggler d-xl-none p-1" id="headerCollapse" href="javascript:void(0)">
+                                    <i class="ti ti-menu-2 fs-6"></i>
+                                </a>
+                                <div class="header-app-badge d-none d-sm-flex align-items-center gap-2">
+                                    <iconify-icon icon="solar:shield-check-bold-duotone" class="text-primary fs-5"></iconify-icon>
+                                    <span class="fw-semibold text-dark">Leave Management Portal</span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3">
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    <div class="dropdown">
+                                        <a class="user-pill-btn dropdown-toggle" href="javascript:void(0)" id="dropUser" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img src="~/images/profile/user1.jpg" alt="User Profile" class="user-avatar-img">
+                                            <div class="d-flex flex-column text-start lh-sm d-none d-md-block">
+                                                <span class="fw-semibold fs-2 text-dark">@User.Identity?.Name</span>
+                                                <span class="text-muted" style="font-size: 0.7rem;">
+                                                    @(User.IsInRole(Roles.Administrator) ? "Administrator" : User.IsInRole(Roles.Supervisor) ? "Supervisor" : "Employee")
+                                                </span>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end shadow-sm border p-2" aria-labelledby="dropUser">
+                                            <div class="px-2 py-1 mb-1 border-bottom d-md-none">
+                                                <div class="fw-bold text-dark fs-3">@User.Identity?.Name</div>
+                                                <div class="text-muted fs-1">
+                                                    @(User.IsInRole(Roles.Administrator) ? "Administrator" : User.IsInRole(Roles.Supervisor) ? "Supervisor" : "Employee")
+                                                </div>
+                                            </div>
+                                            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="dropdown-item d-flex align-items-center gap-2 py-2 rounded">
+                                                <iconify-icon icon="solar:user-circle-line-duotone" class="fs-5"></iconify-icon>
+                                                <span>Manage Profile</span>
+                                            </a>
+                                            <div class="dropdown-divider my-1"></div>
+                                            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" class="p-1">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm w-100 d-flex align-items-center justify-content-center gap-1">
+                                                    <iconify-icon icon="solar:logout-2-line-duotone" class="fs-4"></iconify-icon>
+                                                    <span>Sign Out</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="d-flex align-items-center gap-2">
+                                        <a class="btn btn-outline-primary btn-sm" asp-area="Identity" asp-page="/Account/Login">
+                                            <iconify-icon icon="solar:login-2-line-duotone"></iconify-icon>
+                                            <span>Sign In</span>
+                                        </a>
+                                        <a class="btn btn-primary btn-sm" asp-area="Identity" asp-page="/Account/Register">
+                                            <iconify-icon icon="solar:user-plus-rounded-line-duotone"></iconify-icon>
+                                            <span>Register</span>
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </nav>
+                    </header>
+                    <!--  Header End -->
+
+                    <main role="main" class="flex-grow-1 pb-3">
+                        @RenderBody()
+                    </main>
+
+                    <footer class="app-footer text-center mt-auto">
+                        <div class="mb-0">
+                            &copy; @DateTime.Now.Year - Leave Management | <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-primary text-decoration-underline">Privacy Policy</a>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/simplebar/dist/simplebar.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.js"></script>
+    <script src="~/js/sidebarmenu.js"></script>
+    <script src="~/js/app.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

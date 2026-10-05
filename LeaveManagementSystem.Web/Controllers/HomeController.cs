@@ -1,5 +1,4 @@
-using LeaveManagementSystem.Web.Models;
-using Microsoft.AspNetCore.Mvc;
+using LeaveManagementSystem.Application.Models;
 using System.Diagnostics;
 
 namespace LeaveManagementSystem.Web.Controllers
@@ -11,7 +10,7 @@ namespace LeaveManagementSystem.Web.Controllers
         {
             _logger = logger;
         }
-        public IActionResult Index() 
+        public IActionResult Index()
         {
             return View();
         }

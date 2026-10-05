@@ -1,7 +1,5 @@
-﻿using LeaveManagementSystem.Web.Models.LeaveRequests;
-using LeaveManagementSystem.Web.Services;
-using LeaveManagementSystem.Web.Services.LeaveRequests;
-using Microsoft.AspNetCore.Mvc;
+﻿using LeaveManagementSystem.Application.Models.LeaveRequests;
+using LeaveManagementSystem.Application.Services.LeaveTypes;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LeaveManagementSystem.Web.Controllers
@@ -19,7 +17,7 @@ namespace LeaveManagementSystem.Web.Controllers
         // Employee Create Request
         public async Task<IActionResult> Create(int? leaveTypeId)
         {
-            
+
             var leaveTypes = await _leaveTypesService.GetAllLeaveTypes();
             var leaveTypesList = new SelectList(leaveTypes, "Id", "Name", leaveTypeId);
             var model = new LeaveRequestCreateVM
@@ -37,23 +35,23 @@ namespace LeaveManagementSystem.Web.Controllers
         public async Task<IActionResult> Create(LeaveRequestCreateVM model)
         {
             //Validate days dont exceed the available days for the leave type
-            if(await _leaveRequestsService.RequestDatesExceedAllocation(model))
+            if (await _leaveRequestsService.RequestDatesExceedAllocation(model))
             {
                 ModelState.AddModelError(string.Empty, "You have exceeded your allocation for this leave type");
                 ModelState.AddModelError(nameof(model.EndDate), "You do not have enough days for this request");
             }
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 await _leaveRequestsService.CreateLeaveRequest(model);
                 return RedirectToAction(nameof(Index));
             }
 
 
-                var leaveTypes = await _leaveTypesService.GetAllLeaveTypes();
-                model.LeaveTypes = new SelectList(leaveTypes, "Id", "Name");
-                return View(model);
-            
-            
+            var leaveTypes = await _leaveTypesService.GetAllLeaveTypes();
+            model.LeaveTypes = new SelectList(leaveTypes, "Id", "Name");
+            return View(model);
+
+
         }
 
         //Employee Cancel Requests
@@ -68,7 +66,7 @@ namespace LeaveManagementSystem.Web.Controllers
         //Admin or supervisor should be able to view all requests
 
         [Authorize(Policy = "AdminSupervisorOnly")]
-        
+
         public async Task<IActionResult> ListRequests(int leaveRequestId)
         {
             var model = await _leaveRequestsService.AdminGetAllLeaveRequests();

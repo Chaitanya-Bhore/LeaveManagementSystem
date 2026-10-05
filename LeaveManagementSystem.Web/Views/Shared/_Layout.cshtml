@@ -1,4 +1,5 @@
-﻿@using LeaveManagementSystem.Web.Common
+﻿@using LeaveManagementSystem.Common.Static
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,12 +8,16 @@
     <title>@ViewData["Title"] - LeaveManagementSystem</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/jqueryui/jquery-ui.min.css" />
+    <link rel="stylesheet" href="~/lib/sweetalert2/sweetalert2.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LeaveManagementSystem.Web.styles.css" asp-append-version="true" />
+
+    <!-- jQuery UI MUST COME LAST FOR THIS TEST -->
+    <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.css" />
 </head>
 <body>
     <header>
+
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">Leave Management System</a>
@@ -101,9 +106,9 @@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/sweetalert/sweetalert.min.js"></script>
     <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

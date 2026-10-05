@@ -1,31 +1,501 @@
-html {
-  font-size: 14px;
+/* ==========================================================================
+   LeaveMS - Professional Leave Management System Theme Enhancements
+   ========================================================================== */
+
+:root {
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-subtle: #eef2ff;
+  --primary-text: #3730a3;
+  
+  --secondary-color: #64748b;
+  --secondary-subtle: #f1f5f9;
+  
+  --success-color: #10b981;
+  --success-subtle: #ecfdf5;
+  --success-text: #065f46;
+  
+  --warning-color: #f59e0b;
+  --warning-subtle: #fffbeb;
+  --warning-text: #92400e;
+  
+  --danger-color: #ef4444;
+  --danger-subtle: #fef2f2;
+  --danger-text: #991b1b;
+  
+  --surface-bg: #ffffff;
+  --app-bg: #f8fafc;
+  --border-color: #e2e8f0;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+/* Base resets & spacing fixes */
+html, body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: var(--text-main);
+  background-color: var(--app-bg);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin-bottom: 60px;
+  margin-bottom: 0 !important;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.page-wrapper {
+  background-color: var(--app-bg) !important;
+  min-height: 100vh;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* ==========================================================================
+   Layout & Spacing Overrides (Fixing Template Gaps)
+   ========================================================================== */
+
+#main-wrapper[data-layout="vertical"][data-sidebar-position="fixed"] .left-sidebar {
+  top: 0 !important;
+  height: 100vh !important;
+  border-right: 1px solid var(--border-color);
+  box-shadow: none !important;
+  background-color: var(--surface-bg) !important;
+  z-index: 1000;
+}
+
+.body-wrapper {
+  background-color: var(--app-bg) !important;
+  min-height: 100vh;
+}
+
+.body-wrapper > .body-wrapper-inner {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.body-wrapper > .body-wrapper-inner > .container-fluid {
+  padding-top: 18px !important;
+  padding-bottom: 0 !important;
+  padding-left: 28px !important;
+  padding-right: 28px !important;
+  max-width: 1440px !important;
+  flex: 1 0 auto;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+main[role="main"] {
+  flex: 1 0 auto !important;
+}
+
+@media (max-width: 768px) {
+  .body-wrapper > .body-wrapper-inner > .container-fluid {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-top: 14px !important;
+  }
+}
+
+/* ==========================================================================
+   Header Styling
+   ========================================================================== */
+
+.app-header {
+  position: relative !important;
+  top: 0 !important;
+  width: 100% !important;
+  background: var(--surface-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-sm) !important;
+  margin-bottom: 20px !important;
+  padding: 0 16px !important;
+  min-height: 56px !important;
+}
+
+.app-header .navbar {
+  min-height: 56px !important;
+  padding: 0 !important;
+}
+
+.header-app-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.user-pill-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 12px 5px 6px;
+  border-radius: 9999px;
+  border: 1px solid var(--border-color);
+  background: var(--surface-bg);
+  transition: all 0.2s ease;
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+.user-pill-btn:hover, .user-pill-btn:focus {
+  background: var(--secondary-subtle);
+  border-color: #cbd5e1;
+  color: var(--text-main);
+}
+
+.user-avatar-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-role-badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-weight: 600;
+  background: var(--primary-subtle);
+  color: var(--primary-text);
+}
+
+/* ==========================================================================
+   Sidebar Styling
+   ========================================================================== */
+
+.brand-logo {
+  min-height: 64px !important;
+  padding: 0 20px !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.brand-icon-wrapper {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--primary-subtle), #e0e7ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c7d2fe;
+}
+
+.tracking-wider {
+  letter-spacing: 0.08em;
+}
+
+.left-sidebar .scroll-sidebar {
+  padding: 12px 14px !important;
+  height: calc(100vh - 65px) !important;
+}
+
+.nav-small-cap {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  color: #94a3b8 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  padding: 12px 12px 4px 12px !important;
+  margin-top: 6px !important;
+}
+
+.sidebar-nav ul .sidebar-item .sidebar-link {
+  color: #334155 !important;
+  font-weight: 500 !important;
+  font-size: 0.88rem !important;
+  padding: 9px 12px !important;
+  margin: 3px 0 !important;
+  border-radius: var(--radius-sm) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  transition: all 0.15s ease-in-out !important;
+  text-decoration: none !important;
+}
+
+.sidebar-nav ul .sidebar-item .sidebar-link::before {
+  display: none !important;
+}
+
+.sidebar-nav ul .sidebar-item .sidebar-link iconify-icon,
+.sidebar-nav ul .sidebar-item .sidebar-link i {
+  font-size: 1.25rem !important;
+  color: #64748b !important;
+  transition: color 0.15s ease-in-out;
+}
+
+.sidebar-nav ul .sidebar-item .sidebar-link:hover {
+  background-color: #f1f5f9 !important;
+  color: var(--primary-color) !important;
+}
+
+.sidebar-nav ul .sidebar-item .sidebar-link:hover iconify-icon,
+.sidebar-nav ul .sidebar-item .sidebar-link:hover i {
+  color: var(--primary-color) !important;
+}
+
+.sidebar-nav ul .sidebar-item .sidebar-link.active,
+.sidebar-nav ul .sidebar-item.selected > .sidebar-link {
+  background-color: var(--primary-subtle) !important;
+  color: var(--primary-color) !important;
+  font-weight: 600 !important;
+}
+
+.sidebar-nav ul .sidebar-item .sidebar-link.active iconify-icon,
+.sidebar-nav ul .sidebar-item .sidebar-link.active i,
+.sidebar-nav ul .sidebar-item.selected > .sidebar-link iconify-icon {
+  color: var(--primary-color) !important;
+}
+
+/* ==========================================================================
+   Page Content Hierarchy & Card Styling
+   ========================================================================== */
+
+h1, .h1 {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  margin-bottom: 0.75rem !important;
+  letter-spacing: -0.01em;
+}
+
+h2, .h2 {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  color: #0f172a !important;
+}
+
+h3, .h3, h4, .h4 {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  color: #1e293b !important;
+}
+
+.card {
+  background-color: var(--surface-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-sm) !important;
+  margin-bottom: 1.5rem !important;
+  overflow: hidden;
+}
+
+.card-header {
+  background-color: #fafbfc !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  padding: 14px 20px !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  color: #1e293b !important;
+}
+
+.card-body {
+  padding: 20px !important;
+}
+
+/* ==========================================================================
+   Tables & Data Grid Styling
+   ========================================================================== */
+
+.table-responsive {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--surface-bg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+}
+
+.table {
+  margin-bottom: 0 !important;
+  color: var(--text-main);
+}
+
+.table thead th {
+  background-color: #f8fafc !important;
+  color: #475569 !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  padding: 12px 16px !important;
+  vertical-align: middle;
+}
+
+.table tbody td {
+  padding: 13px 16px !important;
+  vertical-align: middle !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  font-size: 0.88rem !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #fbfcfe !important;
+}
+
+.table tbody tr:hover {
+  background-color: #f8fafc !important;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+/* ==========================================================================
+   Buttons & Badges
+   ========================================================================== */
+
+.btn {
+  font-weight: 500 !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 7px 16px !important;
+  font-size: 0.875rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  transition: all 0.15s ease-in-out !important;
+}
+
+.btn-sm {
+  padding: 5px 12px !important;
+  font-size: 0.8125rem !important;
+  border-radius: 5px !important;
+}
+
+.btn-primary {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(79, 70, 229, 0.2) !important;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--primary-hover) !important;
+  border-color: var(--primary-hover) !important;
+  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.3) !important;
+}
+
+.btn-outline-primary {
+  color: var(--primary-color) !important;
+  border-color: #cbd5e1 !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+  background-color: var(--primary-subtle) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
+}
+
+.btn-danger {
+  background-color: var(--danger-color) !important;
+  border-color: var(--danger-color) !important;
+  color: #ffffff !important;
+}
+
+.btn-warning {
+  background-color: var(--warning-color) !important;
+  border-color: var(--warning-color) !important;
+  color: #ffffff !important;
+}
+
+.btn-success {
+  background-color: var(--success-color) !important;
+  border-color: var(--success-color) !important;
+  color: #ffffff !important;
+}
+
+.btn-info {
+  background-color: #0284c7 !important;
+  border-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+/* Badges */
+.badge {
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  padding: 4px 10px !important;
+  border-radius: 9999px !important;
+  letter-spacing: 0.02em;
+}
+
+.badge.bg-primary {
+  background-color: var(--primary-subtle) !important;
+  color: var(--primary-text) !important;
+  border: 1px solid #c7d2fe;
+}
+
+.badge.bg-success {
+  background-color: var(--success-subtle) !important;
+  color: var(--success-text) !important;
+  border: 1px solid #a7f3d0;
+}
+
+.badge.bg-warning {
+  background-color: var(--warning-subtle) !important;
+  color: var(--warning-text) !important;
+  border: 1px solid #fde68a;
+}
+
+.badge.bg-danger {
+  background-color: var(--danger-subtle) !important;
+  color: var(--danger-text) !important;
+  border: 1px solid #fecaca;
+}
+
+.badge.bg-dark {
+  background-color: #f1f5f9 !important;
+  color: #334155 !important;
+  border: 1px solid #cbd5e1;
+}
+
+/* ==========================================================================
+   Forms & Controls
+   ========================================================================== */
+
+.form-control, .form-select {
+  border-radius: var(--radius-sm) !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 8px 14px !important;
+  font-size: 0.88rem !important;
+  color: var(--text-main) !important;
+  background-color: #ffffff !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #818cf8 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
+  outline: none !important;
+}
+
+.form-label, .control-label {
+  font-size: 0.84rem !important;
+  font-weight: 600 !important;
+  color: #334155 !important;
+  margin-bottom: 6px !important;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.app-footer {
+  border-top: 1px solid var(--border-color);
+  padding: 16px 0 8px 0;
+  margin-top: auto;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
 }
