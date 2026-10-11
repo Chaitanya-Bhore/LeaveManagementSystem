@@ -30,7 +30,7 @@ builder.Services.AddHttpContextAccessor();
 //ILeaveTypesService is the contract and LeaveTypesService is the implementation of the interface
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = true;
+    options.SignIn.RequireConfirmedAccount = !builder.Environment.IsDevelopment();
     options.Password.RequiredLength = 8;
     options.Password.RequireNonAlphanumeric = false;
 })

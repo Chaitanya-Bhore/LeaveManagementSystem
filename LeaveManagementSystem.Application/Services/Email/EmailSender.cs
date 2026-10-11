@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Net.Mail;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace LeaveManagementSystem.Application.Services.Email;
 
 public class EmailSender(IConfiguration _configuration) : IEmailSender
+
 {
     public async Task SendEmailAsync(string email, string subject, string htmlMessage)
     {

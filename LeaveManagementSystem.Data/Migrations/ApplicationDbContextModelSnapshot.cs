@@ -148,7 +148,7 @@ namespace LeaveManagementSystem.Data.Migrations
 
                     b.HasIndex("PeriodId");
 
-                    b.ToTable("LeaveAllocations");
+                    b.ToTable("LeaveAllocations", (string)null);
                 });
 
             modelBuilder.Entity("LeaveManagementSystem.Data.LeaveRequest", b =>
@@ -191,7 +191,7 @@ namespace LeaveManagementSystem.Data.Migrations
 
                     b.HasIndex("ReviewerId");
 
-                    b.ToTable("LeaveRequests");
+                    b.ToTable("LeaveRequests", (string)null);
                 });
 
             modelBuilder.Entity("LeaveManagementSystem.Data.LeaveRequestStatus", b =>
@@ -209,7 +209,7 @@ namespace LeaveManagementSystem.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LeaveRequestStatuses");
+                    b.ToTable("LeaveRequestStatuses", (string)null);
 
                     b.HasData(
                         new
@@ -251,7 +251,7 @@ namespace LeaveManagementSystem.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LeaveTypes");
+                    b.ToTable("LeaveTypes", (string)null);
                 });
 
             modelBuilder.Entity("LeaveManagementSystem.Data.Period", b =>
@@ -274,7 +274,7 @@ namespace LeaveManagementSystem.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Periods");
+                    b.ToTable("Periods", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
